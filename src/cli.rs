@@ -1,10 +1,10 @@
 pub enum CLI {
-    // Add(String, Option<String>),
     Add(String),
     List(),
-    Remove(String),
-    // RemoveAll(),
-    Complete(String),
+    Remove(i32),
+    RemoveAll(),
+    Complete(i32),
+    View(i32),
 }
 
 impl CLI {
@@ -15,32 +15,47 @@ impl CLI {
         };
 
         Ok(CLI::Add(name))
-
-        // let details = args.next();
-        //
-        // Ok(CLI::Add(name, details))
     }
 
     fn remove(mut args: impl Iterator<Item = String>) -> Result<CLI, ()> {
-        let id_or_name = match args.next() {
+        let id_string = match args.next() {
             None => todo!("We need a name here error message"),
             Some(arg) => arg,
         };
 
-        Ok(CLI::Remove(id_or_name))
+        let id = id_string.parse::<i32>().unwrap();
+
+        Ok(CLI::Remove(id))
+    }
+
+    fn view(mut args: impl Iterator<Item = String>) -> Result<CLI, ()> {
+        let id_string = match args.next() {
+            None => todo!("We need a name here error message"),
+            Some(arg) => arg,
+        };
+
+        let id = id_string.parse::<i32>().unwrap();
+
+        Ok(CLI::View(id))
     }
 
     fn complete(mut args: impl Iterator<Item = String>) -> Result<CLI, ()> {
-        let id_or_name = match args.next() {
+        let id_string = match args.next() {
             None => todo!("We need a name here error message"),
             Some(arg) => arg,
         };
 
-        Ok(CLI::Complete(id_or_name))
+        let id = id_string.parse::<i32>().unwrap();
+
+        Ok(CLI::Complete(id))
     }
 
     fn list() -> Result<CLI, ()> {
         Ok(CLI::List())
+    }
+
+    fn remove_all() -> Result<CLI, ()> {
+        Ok(CLI::RemoveAll())
     }
 
     pub fn parse(mut args: impl Iterator<Item = String>) -> Result<CLI, ()> {
@@ -56,7 +71,9 @@ impl CLI {
             "add" | "a" => CLI::add(args),
             "list" | "l" => CLI::list(),
             "remove" | "r" => CLI::remove(args),
+            "remove-all" | "ra" => CLI::remove_all(),
             "finish" | "f" | "complete" | "c" => CLI::complete(args),
+            "view" | "v" => CLI::view(args),
             _ => Err(()),
         }
     }
