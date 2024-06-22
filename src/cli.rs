@@ -1,4 +1,4 @@
-pub enum CLI {
+pub enum Cli {
     Add(String),
     List(),
     Remove(i32),
@@ -7,17 +7,17 @@ pub enum CLI {
     View(i32),
 }
 
-impl CLI {
-    fn add(mut args: impl Iterator<Item = String>) -> Result<CLI, ()> {
+impl Cli {
+    fn add(mut args: impl Iterator<Item = String>) -> Result<Cli, ()> {
         let name = match args.next() {
             None => todo!("We need a name here error message"),
             Some(name) => name,
         };
 
-        Ok(CLI::Add(name))
+        Ok(Cli::Add(name))
     }
 
-    fn remove(mut args: impl Iterator<Item = String>) -> Result<CLI, ()> {
+    fn remove(mut args: impl Iterator<Item = String>) -> Result<Cli, ()> {
         let id_string = match args.next() {
             None => todo!("We need a name here error message"),
             Some(arg) => arg,
@@ -25,10 +25,10 @@ impl CLI {
 
         let id = id_string.parse::<i32>().unwrap();
 
-        Ok(CLI::Remove(id))
+        Ok(Cli::Remove(id))
     }
 
-    fn view(mut args: impl Iterator<Item = String>) -> Result<CLI, ()> {
+    fn view(mut args: impl Iterator<Item = String>) -> Result<Cli, ()> {
         let id_string = match args.next() {
             None => todo!("We need a name here error message"),
             Some(arg) => arg,
@@ -36,10 +36,10 @@ impl CLI {
 
         let id = id_string.parse::<i32>().unwrap();
 
-        Ok(CLI::View(id))
+        Ok(Cli::View(id))
     }
 
-    fn complete(mut args: impl Iterator<Item = String>) -> Result<CLI, ()> {
+    fn complete(mut args: impl Iterator<Item = String>) -> Result<Cli, ()> {
         let id_string = match args.next() {
             None => todo!("We need a name here error message"),
             Some(arg) => arg,
@@ -47,18 +47,18 @@ impl CLI {
 
         let id = id_string.parse::<i32>().unwrap();
 
-        Ok(CLI::Complete(id))
+        Ok(Cli::Complete(id))
     }
 
-    fn list() -> Result<CLI, ()> {
-        Ok(CLI::List())
+    fn list() -> Result<Cli, ()> {
+        Ok(Cli::List())
     }
 
-    fn remove_all() -> Result<CLI, ()> {
-        Ok(CLI::RemoveAll())
+    fn remove_all() -> Result<Cli, ()> {
+        Ok(Cli::RemoveAll())
     }
 
-    pub fn parse(mut args: impl Iterator<Item = String>) -> Result<CLI, ()> {
+    pub fn parse(mut args: impl Iterator<Item = String>) -> Result<Cli, ()> {
         args.next();
         // todo!("Validate that we have some args, or show usage if missing");
 
@@ -68,12 +68,12 @@ impl CLI {
         };
 
         match command.to_lowercase().as_str() {
-            "add" | "a" => CLI::add(args),
-            "list" | "l" => CLI::list(),
-            "remove" | "r" => CLI::remove(args),
-            "remove-all" | "ra" => CLI::remove_all(),
-            "finish" | "f" | "complete" | "c" => CLI::complete(args),
-            "view" | "v" => CLI::view(args),
+            "add" | "a" => Cli::add(args),
+            "list" | "l" => Cli::list(),
+            "remove" | "r" => Cli::remove(args),
+            "remove-all" | "ra" => Cli::remove_all(),
+            "finish" | "f" | "complete" | "c" => Cli::complete(args),
+            "view" | "v" => Cli::view(args),
             _ => Err(()),
         }
     }

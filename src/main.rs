@@ -2,7 +2,7 @@ use std::env::args;
 use yatd::Todo;
 
 mod cli;
-use cli::CLI;
+use cli::Cli;
 
 fn main() {
     let maybe_todos = get_todos_from_csv(String::from("todos.csv"));
@@ -10,17 +10,17 @@ fn main() {
         Ok(todos) => todos,
         Err(_) => panic!(),
     };
-    let command = CLI::parse(args()).expect("Failed to parse arguments!");
+    let command = Cli::parse(args()).expect("Failed to parse arguments!");
 
     println!();
 
     let todos = match match command {
-        CLI::Add(name) => Todo::add(todos, name),
-        CLI::List() => Todo::list(todos),
-        CLI::View(id) => Todo::view(todos, id),
-        CLI::Remove(id) => Todo::remove(todos, id),
-        CLI::Complete(id) => Todo::complete(todos, id),
-        CLI::RemoveAll() => Todo::remove_all(todos),
+        Cli::Add(name) => Todo::add(todos, name),
+        Cli::List() => Todo::list(todos),
+        Cli::View(id) => Todo::view(todos, id),
+        Cli::Remove(id) => Todo::remove(todos, id),
+        Cli::Complete(id) => Todo::complete(todos, id),
+        Cli::RemoveAll() => Todo::remove_all(todos),
     } {
         Ok(todos) => todos,
         Err(e) => panic!("{:?}", e),
